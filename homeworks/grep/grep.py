@@ -8,10 +8,27 @@ def output(line):
 
 
 def grep(lines, params):
+    print('params: ', params)
+    print('lines: ', lines)
+    count = 0
     for line in lines:
         line = line.rstrip()
-        if params.pattern in line:
-            output(line)
+        test_line = line
+        print('line: ', line)
+        if params.ignore_case:
+            test_line = str(test_line).lower()
+        if params.pattern in test_line:
+            count += 1
+            if not params.invert and not params.count:
+                print('\tto output: {}, {}'.format(params.pattern, line))
+                output(line)
+        else:
+            if params.invert:
+                print('\tto output: {}, {}'.format(params.pattern, line))
+                output(line)
+    if params.count:
+        print('\tto output: {}, {}'.format(params.pattern, str(count)))
+        output(str(count))
 
 
 def parse_args(args):
