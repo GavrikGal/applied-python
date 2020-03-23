@@ -10,25 +10,40 @@ def output(line):
 def grep(lines, params):
     print('params: ', params)
     print('lines: ', lines)
-    count = 0
+    res_lines = []
     for line in lines:
         line = line.rstrip()
         test_line = line
         print('line: ', line)
-        if params.ignore_case:
+
+        if params.ignore_case:  # Проверка на игнор
             test_line = str(test_line).lower()
-        if params.pattern in test_line:
-            count += 1
-            if not params.invert and not params.count:
-                print('\tto output: {}, {}'.format(params.pattern, line))
-                output(line)
+
+        if not params.invert:
+            test_line = check_from_pattern(test_line, params.pattern)   # Проверка на соответствие патерну
         else:
-            if params.invert:
-                print('\tto output: {}, {}'.format(params.pattern, line))
-                output(line)
+            test_line = check_not_from_pattern(test_line, params.pattern)   # Проверка на НЕ соответствие патерну
+
+        if test_line:
+            res_lines.append(line)  # Формирование конечного списка для вывода
+
     if params.count:
-        print('\tto output: {}, {}'.format(params.pattern, str(count)))
-        output(str(count))
+        print('\tto output: {}, {}'.format(params.pattern, str(len(res_lines))))
+        output(str(len(res_lines)))     # Вывод числа строк соотв. шаблону
+    else:
+        for res_line in res_lines:
+            print('\tto output: {}, {}'.format(params.pattern, res_line))
+            output(res_line)            # Вывод строк по заданию
+
+
+def check_from_pattern(line, pattern):
+    if pattern in line:
+        return line
+
+
+def check_not_from_pattern(line, pattern):
+    if pattern not in line:
+        return line
 
 
 def parse_args(args):
