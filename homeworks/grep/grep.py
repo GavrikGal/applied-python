@@ -15,42 +15,35 @@ def grep(lines, params):
         test_line = line
         print('line: ', line)
 
-        if params.ignore_case:  # Проверка на игнор
+        if params.ignore_case:  # Проверка на игнор регистра
             test_line = str(test_line).lower()
 
         if not params.invert:
             test_line = check_from_pattern(test_line, params.pattern)  # Проверка на соответствие патерну
         else:
-            test_line = check_not_from_pattern(test_line, params.pattern)  # Проверка на НЕ соответствие патерну
+            test_line = check_not_from_pattern(test_line, params.pattern)  # Проверка НЕ ДОЛЖНО соответствовать патерну
 
-        if test_line:   # Формирование конечного списка для вывода
-            if params.before_context:
-                res_lines = get_before(line, lines, res_lines, params.before_context)
-            if params.after_context:
-                res_lines = get_after(line, lines, res_lines, params.after_context)
-            if params.context:
-                res_lines = get_before(line, lines, res_lines, params.context)
-                res_lines = get_after(line, lines, res_lines, params.context)
-            if not (params.before_context ^ params.after_context ^ params.context):
+        if test_line:  # Формирование конечного списка для вывода
+            if params.before_context or params.context:
+                res_lines = get_before(line, lines, res_lines, params.before_context or params.context)
+
+            if line not in res_lines:
                 res_lines.append(line)
+
+            if params.after_context or params.context:
+                res_lines = get_after(line, lines, res_lines, params.after_context or params.context)
 
     if params.count:
         output(str(len(res_lines)))  # Вывод числа строк соотв. шаблону
     else:
-        if params.line_number:
-            res_lines = numerate_lines(lines, res_lines)
-
         print('\t\tto output: pattern - <{}>; lines - '.format(params.pattern), end="")
         for res_line in res_lines:
             print(res_line, end=', ')
             output(res_line)  # Вывод строк по заданию
 
 
-def numerate_lines(lines, res_lines):
-    return [str(lines.index(res_line)+1) + ':' + res_line
-            for res_line in res_lines]
-
-
+# def numerate_line(line, lines):
+#     return str(lines.index(line)+1) + ':' + line
 
 
 def check_from_pattern(line, pattern):
@@ -63,19 +56,19 @@ def check_not_from_pattern(line, pattern):
         return line
 
 
-def get_before(line, lines, res_lines, before_count):
+def get_before(line, lines, res_lines, before_count, line_number=False):
     slice_start = lines.index(line) - before_count
     slice_start = slice_start if slice_start > 0 else 0
-    for new_line in lines[slice_start:lines.index(line) + 1]:
+    for new_line in lines[slice_start:lines.index(line)]:
         if new_line not in res_lines:
             res_lines.append(new_line)
     return res_lines
 
 
-def get_after(line, lines, res_lines, after_count):
+def get_after(line, lines, res_lines, after_count, line_number=False):
     slice_stop = lines.index(line) + after_count + 1
     slice_stop = slice_stop if slice_stop < len(lines) else len(lines)
-    for new_line in lines[lines.index(line):slice_stop]:
+    for new_line in lines[lines.index(line) + 1:slice_stop]:
         if new_line not in res_lines:
             res_lines.append(new_line)
     return res_lines
