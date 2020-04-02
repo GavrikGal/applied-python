@@ -27,8 +27,7 @@ def grep(lines, params):
             if params.before_context or params.context:
                 res_lines = get_before(line, lines, res_lines, params.before_context or params.context)
 
-            if line not in res_lines:
-                res_lines.append(line)
+            res_lines = get_current(line, lines, res_lines)
 
             if params.after_context or params.context:
                 res_lines = get_after(line, lines, res_lines, params.after_context or params.context)
@@ -71,6 +70,12 @@ def get_after(line, lines, res_lines, after_count, line_number=False):
     for new_line in lines[lines.index(line) + 1:slice_stop]:
         if new_line not in res_lines:
             res_lines.append(new_line)
+    return res_lines
+
+
+def get_current(line, lines, res_lines, line_number=False):
+    if line not in res_lines:
+        res_lines.append(line)
     return res_lines
 
 
