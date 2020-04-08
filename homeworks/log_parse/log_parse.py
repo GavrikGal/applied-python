@@ -63,9 +63,14 @@ def parse_data(log, ignore_www=False, start_at=None, stop_at=None, needed_reques
             if ignore_urls and url in ignore_urls:
                 continue
 
-            data.append({'request_date': request_date, 'request_type': request_type,
-                         'request': request, 'protocol': protocol,
-                         'response_code': int(response_code), 'response_time': int(response_time), 'url': url})
+            data.append({'request_date': request_date,
+                         'request_type': request_type,
+                         'request': request,
+                         'protocol': protocol,
+                         'response_code': int(response_code),
+                         'response_time': int(response_time),
+                         'url': url,
+                         })
         except ValueError:
             pass
     return data

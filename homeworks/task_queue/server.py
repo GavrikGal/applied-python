@@ -1,13 +1,31 @@
-
+import socket
 import argparse
+
 
 class TaskQueueServer:
 
     def __init__(self, ip, port, path, timeout):
-        pass
+        self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.connection.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.connection.bind((ip, port))
 
     def run(self):
-        pass
+        self.connection.listen(10)
+        while True:
+            current_connection, address = self.connection.accept()
+            while True:
+                data = current_connection.recv(2048)
+
+                if data == b'quit\n':
+                    current_connection.shutdown(1)
+                    current_connection.close()
+                elif data == b'stop\n':
+                    current_connection.shutdown(1)
+                    current_connection.close()
+                elif data:
+                    print(data)
+
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='This is a simple task queue server with custom protocol')
@@ -40,6 +58,7 @@ def parse_args():
         default=300,
         help='Task maximum GET timeout in seconds')
     return parser.parse_args()
+
 
 if __name__ == '__main__':
     args = parse_args()
