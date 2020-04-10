@@ -59,13 +59,11 @@ class TaskQueueServer:
                 elif command == 'SAVE':
                     break
                 else:
-                    break
+                    response = 'ERROR'
 
                 print('response: ' + response)
                 current_connection.send(response.encode('utf-8'))
             current_connection.close()
-
-
 
 
 class Task:
@@ -95,7 +93,13 @@ class TaskQueue:
         return task.id
 
     def get(self):
-        task = self.queue[0]
+        task = None
+        for q_task in self.queue:
+            if q_task.at_work:
+                continue
+            else:
+                task = q_task
+                break
         task.at_work = True
         self.at_work_queue.append(task)
         # Запустить счетчик таймаута выполнения задания

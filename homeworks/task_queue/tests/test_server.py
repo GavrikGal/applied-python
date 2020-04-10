@@ -61,6 +61,16 @@ class ServerBaseTest(TestCase):
     def test_wrong_command(self):
         self.assertEqual(b'ERROR', self.send(b'ADDD 1 5 12345'))
 
+    def test_save(self):
+        self.assertEqual(b'OK', self.send(b'SAVE'))
+
+    def test_timeout(self):
+        task_id = self.send(b'ADD 1 5 12345')
+        self.assertEqual(b'YES', self.send(b'IN 1 ' + task_id))
+        self.assertEqual(task_id + b' 5 12345', self.send(b'GET 1'))
+        time.sleep(1*60)
+        self.assertEqual(task_id + b' 5 12345', self.send(b'GET 1'))
+
 
 if __name__ == '__main__':
     unittest.main()
