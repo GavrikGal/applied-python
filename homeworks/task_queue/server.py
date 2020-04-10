@@ -1,6 +1,6 @@
 import socket
 import argparse
-from queue import Queue
+import pickle
 
 
 class TaskQueueServer:
@@ -28,6 +28,15 @@ class TaskQueueServer:
 
     def ask_task(self, queue, id):
         return self.queue(queue).task_done(id)
+
+    def save_queues(self):
+        try:
+            with open('dump.txt', 'bw') as file:
+                dumps = pickle.dump(self.task_queue_pool, file)
+                print(dumps)
+                return 'OK'
+        except OSError:
+            return 'ERROR'
 
     def run(self):
         self.connection.listen(10)
@@ -57,7 +66,7 @@ class TaskQueueServer:
                     response = self.exist_task(*params)
 
                 elif command == 'SAVE':
-                    break
+                    response = self.save_queues()
                 else:
                     response = 'ERROR'
 
@@ -76,7 +85,7 @@ class Task:
         self.data = data
         self.length = length
         self.at_work = False
-        
+
 
 class TaskQueue:
     def __init__(self, name):
