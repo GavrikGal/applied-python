@@ -1,39 +1,70 @@
 import socket
 import argparse
 import pickle
+from threading import Thread
+import time
 
 
 class TaskQueueServer:
 
     def __init__(self, ip, port, path, timeout):
+        try:
+            with open('dump.txt', 'br') as file:
+                print('-' * 20)
+                print('LOAD DUMP')
+
+                dump = pickle.load(file)
+                print(dump)
+                self.task_queue_pool = dump
+
+                print('self.task_queue_pool: ' + str(self.task_queue_pool))
+                print('self.task_queue_pool._task_queues: ' + str(self.task_queue_pool._task_queues))
+                print('self.queue_by_name(1): ' + str(self.queue_by_name('1')))
+                print('self.queue_by_name(1).name: ' + str(self.queue_by_name('1').name))
+                print('self.queue_by_name(1).queue: ' + str(self.queue_by_name('1').queue))
+                print('self.queue_by_name(1).at_work_queue: ' + str(self.queue_by_name('1').at_work_queue))
+
+
+
+                print(self.queue_by_name(1).queue)
+                print('-'*20)
+        except OSError:
+            print('LOAD DUMP ERROR')
         self.task_queue_pool = TaskQueuePool()
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # self.connection.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.connection.bind((ip, port))
 
-    def queue(self, name):
+    def queue_by_name(self, name):
         return self.task_queue_pool.get(name)
 
     def add_task(self, queue, length, data):
-        return self.queue(queue).put(Task(length, data))
+        return self.queue_by_name(queue).put(Task(length, data))
 
     def exist_task(self, queue, id):
-        if id in self.queue(queue):
+        if id in self.queue_by_name(queue):
             return 'YES'
         else:
             return 'NO'
 
     def get_task(self, queue):
-        return self.queue(queue).get()
+        return self.queue_by_name(queue).get()
 
     def ask_task(self, queue, id):
-        return self.queue(queue).task_done(id)
+        return self.queue_by_name(queue).task_done(id)
 
     def save_queues(self):
+        print('SAVE METHOD')
         try:
             with open('dump.txt', 'bw') as file:
-                dumps = pickle.dump(self.task_queue_pool, file)
-                print(dumps)
+                print('self.task_queue_pool: ' + str(self.task_queue_pool))
+                print('self.task_queue_pool._task_queues: ' + str(self.task_queue_pool._task_queues))
+                print('self.queue_by_name(1): ' + str(self.queue_by_name('1')))
+                pickle.dump(self.task_queue_pool, file)
+                print('self.queue_by_name(1).name: ' + str(self.queue_by_name('1').name))
+                print('self.queue_by_name(1).queue: ' + str(self.queue_by_name('1').queue))
+                print('self.queue_by_name(1).at_work_queue: ' + str(self.queue_by_name('1').at_work_queue))
+
                 return 'OK'
         except OSError:
             return 'ERROR'
@@ -71,6 +102,7 @@ class TaskQueueServer:
                     response = 'ERROR'
 
                 print('response: ' + response)
+                print()
                 current_connection.send(response.encode('utf-8'))
             current_connection.close()
 
@@ -92,13 +124,23 @@ class TaskQueue:
         self.name = name
         self.queue = []
         self.at_work_queue = []
-        self.done_task_ids = []
+        # self.done_task_ids = []
 
     def __contains__(self, item):
         return item in [task.id for task in self.queue]
 
+    @staticmethod
+    def task_timer(queue, task):
+        time.sleep(0.01*60)
+        if task is None:
+            pass
+        else:
+            task.at_work = False
+            queue.at_work_queue.remove(task)
+
     def put(self, task: Task):
         self.queue.append(task)
+        print(self.queue)
         return task.id
 
     def get(self):
@@ -109,11 +151,18 @@ class TaskQueue:
             else:
                 task = q_task
                 break
+        if task is None:
+            return 'QUEUE IS EMPTY'
         task.at_work = True
         self.at_work_queue.append(task)
         # Запустить счетчик таймаута выполнения задания
+        self.run_timer(task)
         return task.id + ' ' + task.length + ' ' + task.data
-        # self.queue.pop(0)
+
+    def run_timer(self, task):
+        thread = Thread(target=self.task_timer, args=(self, task))
+        thread.start()
+        print(thread)
 
     def task_done(self, id):
         response = 'NO'
@@ -122,9 +171,12 @@ class TaskQueue:
                 response = 'YES'
                 self.queue.remove(task)
                 self.at_work_queue.remove(task)
-                self.done_task_ids.append(task.id)
+                # self.done_task_ids.append(task.id)
                 break
         return response
+
+    def task_at_work(self, task_id):
+        return task_id in [task.id for task in self.at_work_queue]
 
     # def task_complete(self, id):
     #     return id in self.done_task_ids

@@ -18,6 +18,11 @@ class ServerBaseTest(TestCase):
         self.server.terminate()
         self.server.wait()
 
+    def reboot_server(self):
+        self.tearDown()
+        self.setUp()
+
+
     def send(self, command):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect(('127.0.0.1', 5555))
@@ -64,16 +69,17 @@ class ServerBaseTest(TestCase):
     def test_save(self):
         self.assertEqual(b'OK', self.send(b'SAVE'))
 
-    def test_save_with_data(self):
+    def test_save_with_reboot(self):
         task_id = self.send(b'ADD 1 5 12345')
         self.assertEqual(b'OK', self.send(b'SAVE'))
+        self.reboot_server()
         # вызвать перезагрузку сервера
-        self.assertEqual(b'TODO', self.send(b'IN 1 ' + task_id))
+        self.assertEqual(b'YES', self.send(b'IN 1 ' + task_id))
 
     def test_timeout(self):
         task_id = self.send(b'ADD 1 5 12345')
         self.assertEqual(task_id + b' 5 12345', self.send(b'GET 1'))
-        time.sleep(0.01*60)
+        time.sleep(0.02*60)
         self.assertEqual(task_id + b' 5 12345', self.send(b'GET 1'))
 
 
