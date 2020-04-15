@@ -30,7 +30,9 @@ class TaskQueueServer:
         return self.task_queue_pool.get(name)
 
     def add_task(self, queue, length, data):
-        return self.queue_by_name(queue).put(Task(length, data))
+        response = self.queue_by_name(queue).put(Task(length, data))
+        self.save_queues()
+        return response
 
     def exist_task(self, queue, id):
         if id in self.queue_by_name(queue):

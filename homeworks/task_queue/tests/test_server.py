@@ -25,7 +25,6 @@ class ServerBaseTest(TestCase):
         self.server.wait()
         self.setUp()
 
-
     def send(self, command):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect(('127.0.0.1', 5555))
@@ -76,7 +75,11 @@ class ServerBaseTest(TestCase):
         task_id = self.send(b'ADD 1 5 12345')
         self.assertEqual(b'OK', self.send(b'SAVE'))
         self.reboot_server()
-        # вызвать перезагрузку сервера
+        self.assertEqual(b'YES', self.send(b'IN 1 ' + task_id))
+
+    def test_after_emergency_reboot(self):
+        task_id = self.send(b'ADD 1 5 12345')
+        self.reboot_server()
         self.assertEqual(b'YES', self.send(b'IN 1 ' + task_id))
 
     def test_timeout(self):
