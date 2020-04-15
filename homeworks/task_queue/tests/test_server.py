@@ -15,11 +15,14 @@ class ServerBaseTest(TestCase):
         time.sleep(0.5)
 
     def tearDown(self):
+        self.send(b'CLEAR')
+        time.sleep(0.5)
         self.server.terminate()
         self.server.wait()
 
     def reboot_server(self):
-        self.tearDown()
+        self.server.terminate()
+        self.server.wait()
         self.setUp()
 
 
