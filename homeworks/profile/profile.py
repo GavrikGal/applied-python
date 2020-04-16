@@ -1,14 +1,17 @@
 import time
+from functools import wraps
+
 
 def profile(f):
-    def wrap():
+    @wraps(f)
+    def wrapper():
         print("'" + f.__name__ + "'" + ' started')
         time_start = time.time()
         f()
         time_stop = time.time()
         time_process = time_stop - time_start
-        print("'{}' finished in {:.2f}s".format(f.__name__, time_process))
-    return wrap
+        print("'{}' finished in {:.2f}s\n".format(f.__name__, time_process))
+    return wrapper
 
 
 @profile
@@ -19,8 +22,9 @@ def foo():
 
 class Bar:
     def __init__(self):
-        pass
+        print('\t Bar body')
 
 
 foo()
+
 Bar()
