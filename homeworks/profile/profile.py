@@ -5,12 +5,10 @@ from functools import wraps
 def profile(f):
     @wraps(f)
     def wrapper():
-        print("'" + f.__name__ + "'" + ' started')
-        time_start = time.time()
+        print("'{}' started".format(f.__name__))
+        t = time.perf_counter()
         f()
-        time_stop = time.time()
-        time_process = time_stop - time_start
-        print("'{}' finished in {:.2f}s\n".format(f.__name__, time_process))
+        print("'{}' finished in {:f}s\n".format(f.__name__, (time.perf_counter()-t)))
     return wrapper
 
 
