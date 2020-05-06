@@ -25,7 +25,7 @@ def decorate_cls(cls):
 
 
 def profile(target):
-    if isinstance(target, types.FunctionType):    # if hasattr(target, '__call__'):
+    if isinstance(target, types.FunctionType):
         target = decorate_func()(target)
     else:
         target = decorate_cls(target)
