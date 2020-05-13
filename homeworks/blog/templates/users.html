@@ -4,6 +4,31 @@
 
 <h2>{{ the_title }}</h2>
 
+    <form method="post" action="/add_user">
+        <table>
+            <p>Заполните форму для добавления пользователя</p>
+            <tr>
+                <td>Имя:</td>
+                <td><input name="first_name" type="text" width="150"></td>
+            </tr>
+            <tr>
+                <td>Фамилия:</td>
+                <td><input name="last_name" type="text" width="150"></td>
+            </tr>
+            <tr>
+                <td>Логин:</td>
+                <td><input name="login" type="text" width="150"></td>
+            </tr>
+            <tr>
+                <td>Пароль:</td>
+                <td><input name="password" type="text" width="150"></td>
+            </tr>
+        </table>
+        <p><input value="Добавить" type="submit"></p>
+    </form>
+
+    <p>Список всех пользователей</p>
+
     <table>
     <tr>
         {% for row_title in the_row_titles %}
@@ -19,8 +44,9 @@
         </tr>
     {% endfor %}
 
-
     </table>
+
+
 
 
 {% endblock %}
