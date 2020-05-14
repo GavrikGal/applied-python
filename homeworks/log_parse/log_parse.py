@@ -59,7 +59,7 @@ def parse_data(log, ignore_www=False, start_at=None, stop_at=None, needed_reques
             response_code, response_time = response_code_and_time.split(' ')
             url = request.split('://')[1]
             if ignore_www:
-                url = str(url).replace('www.', '')
+                url = str(url).replace('web.', '')
             if ignore_urls and url in ignore_urls:
                 continue
 

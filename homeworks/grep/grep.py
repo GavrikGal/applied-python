@@ -80,7 +80,7 @@ def get_current(line, lines, res_lines, line_number=False):
 
 
 def parse_args(args):
-    parser = argparse.ArgumentParser(description='This is a simple grep on python')
+    parser = argparse.ArgumentParser(description='This is a simple grep on app')
     parser.add_argument(
         '-v', action="store_true", dest="invert", default=False, help='Selected lines are those not matching pattern.')
     parser.add_argument(

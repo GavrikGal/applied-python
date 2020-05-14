@@ -27,5 +27,5 @@ class StackOverFlow(CommandHandler):
 
 if __name__ == '__main__':
     s = StackOverFlow()
-    result = s.handle('Stack python virtualenv')
+    result = s.handle('Stack app virtualenv')
     print(result)

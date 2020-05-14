@@ -1,20 +1,6 @@
-from flask import Flask, render_template, redirect, request, url_for
-from homeworks.blog.DBcm import UseDataBase, ConnectionError, CredentialsError, SQLError
-
-
-app = Flask(__name__)
-app.secret_key = 'SecretKey'
-
-app.config['dbconfig'] = {'host': '127.0.0.1',
-                          'user': 'blog',
-                          'password': 'blogpasswd',
-                          'database': 'blogdb', }
-
-
-@app.route('/')
-def entry_page() -> 'html':
-    return render_template('index.html',
-                           the_title='Привет! Это какой-то блог', )
+from flask import render_template, request, redirect
+from homeworks.blog.app.repository.DBcm import UseDataBase, ConnectionError, CredentialsError, SQLError
+from ..run import app
 
 
 @app.route('/users', methods=['GET'])
@@ -66,7 +52,3 @@ def add_user() -> 'html':
         print('Something went wrong:', str(err))
 
     return 'Error'
-
-
-if __name__ == '__main__':
-    app.run()
