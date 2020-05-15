@@ -4,7 +4,6 @@ from ...service import users_service, password_service
 
 bp = Blueprint('auth', __name__)
 users_service = users_service.Users_service()
-password_service = password_service
 
 
 @bp.route('/sign_in', methods=['POST'])
