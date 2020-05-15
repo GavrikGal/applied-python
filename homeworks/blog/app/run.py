@@ -1,4 +1,3 @@
-from .web import run
+from .web import web_app
 
-
-# app.run()
+app = web_app.app

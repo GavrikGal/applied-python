@@ -1,8 +1,17 @@
-from flask import render_template
-from ..run import app
+from flask import render_template, session, Blueprint
 
 
-@app.route('/')
+bp = Blueprint('base', __name__)
+
+
+@bp.route('/')
 def entry_page() -> 'html':
-    return render_template('index.html',
-                           the_title='Привет! Это какой-то блог', )
+    if 'username' in session:
+        return render_template('index.html',
+                               the_title='Привет! Это какой-то блог',
+                               the_username=session['username'])
+    else:
+        return render_template('index.html',
+                               the_title='Привет! Это какой-то блог', )
+
+

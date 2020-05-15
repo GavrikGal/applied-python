@@ -6,8 +6,16 @@
     <link rel="stylesheet" href="static/hf.css">
 </head>
 <body>
-    {% block body %}
+    <header>
+        {% block header %}
+            {% include 'header.html' %}
+        {%  endblock %}
+    </header>
+    <section>
+        {% block body %}
 
-    {% endblock %}
+        {% endblock %}
+    </section>
+
 </body>
 </html>
