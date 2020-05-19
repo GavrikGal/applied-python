@@ -1,4 +1,4 @@
-{% if not session['username'] %}
+{% if not session['user_name'] %}
     <form method="post" action="/sign_in">
         <table>
             <p>Заполните форму для авторизации</p>
@@ -14,7 +14,7 @@
         <p><input value="Войти" type="submit"></p>
     </form>
 {% else %}
-    <h3>Вы вошли как: {{ session['username'] }}</h3>
+    <h3>Вы вошли как: {{ session['user_name'] }}</h3>
         <form method="post" action="/sign_in">
         <table>
             <p>Заполните форму для смены пользователя</p>

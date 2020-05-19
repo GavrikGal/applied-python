@@ -1,9 +1,9 @@
-from flask import request, redirect, session, Blueprint
-from ...service import users_service, password_service
+from flask import request, redirect, session, Blueprint, g
+from ...service import usersservice, password_service
 
 
 bp = Blueprint('auth', __name__)
-users_service = users_service.Users_service()
+users_service = usersservice.UsersService()
 
 
 @bp.route('/sign_in', methods=['POST'])
@@ -12,7 +12,8 @@ def sign_in() -> 'html':
     if not user:
         return redirect('/sign_out')
     if password_service.verify_password(user.password_hash, request.form['sign_password']):
-        session['username'] = user.first_name
+        session['user_name'] = user.first_name
+        session['user_id'] = user.id
     else:
         return redirect('/sign_out')
     return redirect('/')
@@ -21,5 +22,6 @@ def sign_in() -> 'html':
 @bp.route('/sign_out', methods=['GET'])
 def sign_out() -> 'html':
     if 'username' in session:
-        del session['username']
+        del session['user_name']
+        del session['user_id']
     return redirect('/')

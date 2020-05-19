@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+
+
+<h2>{{ the_title }}</h2>
+
+    {% if session['user_name'] %}
+    <form method="post" action="/add_blog">
+        <table>
+            <p>Хочешь создать новый блог?</p>
+            <tr>
+                <td>Название:</td>
+                <td><input name="blog_name" type="text" width="150"></td>
+            </tr>
+
+        </table>
+        <p><input value="Создать" type="submit"></p>
+    </form>
+    {% endif %}
+
+    {% if the_user_blogs %}
+    <p>Список всех твоих блогов</p>
+
+        <form method="post" action="/delete_blogs">
+        <table>
+        <tr>
+            {% for blog_title in the_blogs_titles %}
+            <td>{{ blog_title }}</td>
+            {% endfor %}
+        </tr>
+        {% for blog in the_user_blogs %}
+            <tr>
+                <td>{{ blog.id }}</td>
+                <td><a href="/blog/{{ blog.id }}" >{{ blog.name }}</a></td>
+                <td><input type="checkbox" name="delete_ids" value="{{ blog.id }}"></td>
+            </tr>
+        {% endfor %}
+
+        </table>
+        <p><input value="Удалить выбранные" type="submit"></p>
+        </form>
+    {% endif %}
+
+
+{% endblock %}
