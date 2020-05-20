@@ -2,33 +2,23 @@
 
 {% block body %}
 
-
-
-<h2>{{ the_title }}</h2>
-
-    {% if session['user_name'] %}
-        <a href="/user_blogs" class="button">Управление своими блогами</a>
-    {% endif %}
-
     {% if the_blogs %}
-    <p>Список всех блогов</p>
+    <h2>{{ the_title }}</h2>
 
         <table>
         <tr>
             {% for blog_title in the_blogs_titles %}
-            <td>{{ blog_title }}</td>
+            <td class="title">{{ blog_title }}</td>
             {% endfor %}
         </tr>
         {% for blog in the_blogs %}
             <tr>
-                <td>{{ blog.id }}</td>
-                <td>{{ blog.name }}</td>
+                <td><a href="/blog/{{ blog.id }}" >{{ blog.name }}</a></td>
                 <td>{{ blog.user.login }}</td>
             </tr>
         {% endfor %}
 
         </table>
     {% endif %}
-
 
 {% endblock %}

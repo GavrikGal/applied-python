@@ -1,3 +1,7 @@
+# from ..repository.blogrepository import BlogRepository
+from ..repository import blogrepository
+
+
 class User:
     def __init__(self, id, first_name, last_name, login, password_hash):
         self.id = id
@@ -5,3 +9,12 @@ class User:
         self.last_name = last_name
         self.login = login
         self.password_hash = password_hash
+        self._blogs = []
+
+    blogs = property()
+
+    @blogs.getter
+    def blogs(self):
+        blog_repository = blogrepository.BlogRepository()
+        self._blogs = blog_repository.all_user_blogs(self.id)
+        return self._blogs

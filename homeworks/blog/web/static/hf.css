@@ -17,22 +17,24 @@ header {
   background-color: antiquewhite;
 }
 section {
-  margin-top:       5%;
+  margin-top:       1%;
   margin-left:      10%;
   margin-right:     10%;
   padding:          0px 10px 10px 10px;
 }
 a {
   text-decoration:  none; 
-  font-weight:      600; 
+  font-weight:      normal;
+  color:            #2a2a2a;
 }
 a:hover {
-  text-decoration:  underline;
+  text-decoration:  none;
 }
 a img {
   border:           0;
 }
 h2 {
+  margin-top:       3%;
   font-size:        150%;
 }
 table {
@@ -57,9 +59,20 @@ td, th {
   margin:           1px 2px;
   vertical-align:   bottom;
 }
+.title {
+  font-weight:      bold;
+}
 .button:hover {
   border:           1px solid #2a2a2a;
   text-decoration:  none;
+}
+.post {
+  margin:           2%;
+  padding:          1%;
+  background-color: antiquewhite;
+}
+.post h1 {
+  font-size:        200%;
 }
 .copyright {
   font-size:        75%;

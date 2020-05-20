@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+
+
+<h2>{{ the_title }}</h2>
+
+    {% if session['user_name'] %}
+    <form method="post" action="/update_blog">
+        <table>
+            <p>Хочешь изменить свой блог?</p>
+            <tr>
+                <td>Название:</td>
+                <td>
+                    <input name="blog_name"
+                           type="text"
+                           width="150"
+                           value="{{ the_blog_name }}">
+                    <input type="hidden" value="{{ the_blog_id }}" name="blog_id">
+                </td>
+            </tr>
+
+        </table>
+        <p><input value="Изменить" type="submit" class="button">
+            <a href="/cancel_update_blog" class="button">Отменить</a></p>
+    </form>
+    {% endif %}
+
+    Все блоги, возможность их удалить и редактировать
+
+
+{% endblock %}

@@ -21,7 +21,7 @@ def sign_in() -> 'html':
 
 @bp.route('/sign_out', methods=['GET'])
 def sign_out() -> 'html':
-    if 'username' in session:
+    if 'user_name' in session:
         del session['user_name']
         del session['user_id']
     return redirect('/')

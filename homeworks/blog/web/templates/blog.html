@@ -4,27 +4,26 @@
 
 
 
-<h2>{{ the_title }}</h2>
+<h2>{{ the_blog_name }}</h2>
+
 
     {% if session['user_name'] %}
-    <form method="post" action="/update_blog">
-        <table>
-            <p>Хочешь изменить свой блог?</p>
-            <tr>
-                <td>Название:</td>
-                <td>
-                    <input name="blog_name"
-                           type="text"
-                           width="150"
-                           value="{{ the_blog_name }}">
-                    <input type="hidden" value="{{ the_blog_id }}" name="blog_id">
-                </td>
-            </tr>
-
-        </table>
-        <p><input value="Изменить" type="submit"><a href="/cancel_update_blog" class="button">Отменить</a></p>
-    </form>
+        {% if session['user_name'] == the_blog_author %}
+            <a href="/add_post/{{ the_blog_id }}" class="button">Добавить пост</a>
+        {% endif %}
     {% endif %}
+
+    {% for the_post in the_posts %}
+        <div class="post">
+            <h1>{{ the_post.title }}</h1>
+            <div>
+                {{ the_post.content }}
+            </div>
+        </div>
+    {% endfor %}
+
+
+
 
 
 {% endblock %}

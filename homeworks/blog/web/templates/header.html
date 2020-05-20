@@ -14,23 +14,8 @@
         <p><input value="Войти" type="submit"></p>
     </form>
 {% else %}
-    <h3>Вы вошли как: {{ session['user_name'] }}</h3>
-        <form method="post" action="/sign_in">
-        <table>
-            <p>Заполните форму для смены пользователя</p>
-            <tr>
-                <td>Логин:</td>
-                <td><input name="sign_login" type="text" width="150"></td>
-            </tr>
-            <tr>
-                <td>Пароль:</td>
-                <td><input name="sign_password" type="text" width="150"></td>
-            </tr>
-        </table>
-            <p>
-                <input value="Сменить" type="submit" class="button">
-                <a href="/sign_out" class="button">Выйти</a>
-                <a href="/users" class="button">Управление пользователями</a>
-            </p>
-    </form>
+    <h3>Привет {{ session['user_name'] }}</h3>
+    <a href="/sign_out" class="button">Выйти</a>
+    <a href="/users" class="button">Управление пользователями</a>
+    <a href="/user_blogs" class="button">Управление своими блогами</a>
 {% endif %}

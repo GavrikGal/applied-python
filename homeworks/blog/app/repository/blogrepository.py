@@ -70,3 +70,23 @@ class BlogRepository:
                             content[3])
             else:
                 raise BlogNotFoundError('Блог с заданным ID не найден')
+
+    def find_by_post_id(self, post_id):
+        with UseDataBase(self.dbconfig) as cursor:
+            _SQL = """SELECT b.id, b.name, b.deleted, b.user_id
+                      FROM blogs AS b, posts AS p, blogs_posts AS bp
+                      WHERE p.id = %s
+                            AND bp.post_id = p.id
+                            AND bp.blog_id = b.id
+                            AND b.deleted = 0;"""
+            _VAL = (post_id,)
+            cursor.execute(_SQL, _VAL)
+            contents = cursor.fetchall()
+            if contents is not None:
+                return [Blog(content[0],
+                             content[1],
+                             self.user_repository.find_by_id(content[2]),
+                             content[3]) for content in contents]
+            else:
+                raise BlogNotFoundError('Блог с заданным ID не найден')
+

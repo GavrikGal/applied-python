@@ -1,5 +1,5 @@
 from flask import Flask
-from .routes import base, users, auth, blogs
+from .routes import base, users, auth, blogs, posts
 from . import config
 
 
@@ -14,3 +14,4 @@ app.register_blueprint(base.bp)
 app.register_blueprint(users.bp)
 app.register_blueprint(auth.bp)
 app.register_blueprint(blogs.bp)
+app.register_blueprint(posts.bp)

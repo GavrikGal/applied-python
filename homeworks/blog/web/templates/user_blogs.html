@@ -16,30 +16,30 @@
             </tr>
 
         </table>
-        <p><input value="Создать" type="submit"></p>
+        <p><input value="Создать" type="submit" class="button"></p>
     </form>
     {% endif %}
 
     {% if the_user_blogs %}
-    <p>Список всех твоих блогов</p>
+    <h2>Список всех твоих блогов</h2>
 
         <form method="post" action="/delete_blogs">
         <table>
         <tr>
             {% for blog_title in the_blogs_titles %}
-            <td>{{ blog_title }}</td>
+            <td class="title">{{ blog_title }}</td>
             {% endfor %}
         </tr>
         {% for blog in the_user_blogs %}
             <tr>
-                <td>{{ blog.id }}</td>
                 <td><a href="/blog/{{ blog.id }}" >{{ blog.name }}</a></td>
                 <td><input type="checkbox" name="delete_ids" value="{{ blog.id }}"></td>
+                <td><a href="/edit_blog/{{ blog.id }}" class="button">изменить</a></td>
             </tr>
         {% endfor %}
 
         </table>
-        <p><input value="Удалить выбранные" type="submit"></p>
+        <p><input value="Удалить выбранные" type="submit" class="button"></p>
         </form>
     {% endif %}
 
