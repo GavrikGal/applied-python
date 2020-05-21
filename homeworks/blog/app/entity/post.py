@@ -2,10 +2,11 @@ from ..repository import blogrepository
 
 
 class Post:
-    def __init__(self, id, title, content):
+    def __init__(self, id, title, content, datetime):
         self.id = id
         self.title = title
         self.content = content
+        self.datetime = datetime
         self._blogs = []
 
     @property

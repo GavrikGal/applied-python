@@ -54,11 +54,17 @@ def delete_blogs() -> 'html':
 @authenticated
 def edit_blog(blog_id):
     blog = blogs_service.find_by_id(blog_id)
+    if 'user_name' in session:
+        user_name = session['user_name']
+    else:
+        user_name = None
     return render_template('edit_blog.html',
                            the_title='Тут можешь изменить свой блог',
                            the_blog_name=blog.name,
                            the_blog_id=blog.id,
-                           the_username=session['user_name'])
+                           the_blog_author=blog.user.first_name,
+                           the_posts=blog.posts,
+                           the_username=user_name)
 
 
 @bp.route('/blog/<blog_id>')

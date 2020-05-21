@@ -27,7 +27,27 @@
     </form>
     {% endif %}
 
+    {% if session['user_name'] %}
+        {% if session['user_name'] == the_blog_author %}
+            <div class="post">
+                <a href="/add_post/{{ the_blog_id }}" class="button">Добавить пост</a>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {% for the_post in the_posts %}
+    <div class="post">
+        <a href="/edit_post/{{ the_blog_id }}/{{ the_post.id }}" class="button">Редактировать</a>
+        <a href="/delete_post/{{ the_blog_id }}/{{ the_post.id }}" class="button">Удалить</a>
+        <h1>{{ the_post.title }}</h1>
+        <div>
+            {{ the_post.content }}
+        </div>
+    </div>
+    {% endfor %}
+
     Все блоги, возможность их удалить и редактировать
+
 
 
 {% endblock %}

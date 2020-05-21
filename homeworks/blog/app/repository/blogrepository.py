@@ -45,9 +45,10 @@ class BlogRepository:
             _SQL = """SELECT id, name, user_id, deleted FROM blogs WHERE deleted = 0 AND user_id = %s"""
             cursor.execute(_SQL, (user_id,))
             contents = cursor.fetchall()
+            user = self.user_repository.find_by_id(user_id)
             blogs = [Blog(content[0],
                           content[1],
-                          self.user_repository.find_by_id(content[2]),
+                          user,
                           content[3]) for content in contents]
         return blogs
 
@@ -73,7 +74,7 @@ class BlogRepository:
 
     def find_by_post_id(self, post_id):
         with UseDataBase(self.dbconfig) as cursor:
-            _SQL = """SELECT b.id, b.name, b.deleted, b.user_id
+            _SQL = """SELECT b.id, b.name, b.user_id, b.deleted
                       FROM blogs AS b, posts AS p, blogs_posts AS bp
                       WHERE p.id = %s
                             AND bp.post_id = p.id

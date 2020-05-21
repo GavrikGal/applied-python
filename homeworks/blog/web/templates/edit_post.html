@@ -17,8 +17,7 @@
         <p>Текст:</p>
         <textarea name="post_content"
                   rows="10"
-                  cols="76"
-                  value="{{ the_post_content }}"></textarea>
+                  cols="76">{{ the_post_content }}</textarea>
 
 
         {% if the_user_blogs %}
@@ -36,7 +35,14 @@
                 <td><input type="checkbox" name="blog_ids" value="{{ blog.id }}"
                            {% if the_blog_id == blog.id %}
                            checked
-                           {% endif %}></td>
+                           {% else %}
+                           {% if the_post_blogs_ids %}
+                               {% if blog.id in the_post_blogs_ids %}
+                               checked
+                               {% endif %} 
+                           {% endif %}
+                           {% endif %} >
+                </td>
             </tr>
         {% endfor %}
 
@@ -47,12 +53,13 @@
         <p>
             {% if the_post_title %}
                 <input value="Изменить" type="submit" class="button">
+                <a href="/cancel_update_exist_post/{{ the_blog_id }}" class="button">Отменить</a>
             {% else %}
                 <input value="Добавить" type="submit" class="button">
+                <a href="/cancel_update_post/{{ the_blog_id }}" class="button">Отменить</a>
             {% endif %}
-            <a href="/cancel_update_post/{{ the_blog_id }}" class="button">Отменить</a></p>
+        </p>
     </form>
     {% endif %}
-
 
 {% endblock %}

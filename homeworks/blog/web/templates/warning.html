@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h2>{{ the_title }}</h2>
+
+    <p>{{ the_message }}</p>
+
+    {% if the_confirm_text %}
+        <a href="{{ the_confirm_href }}" class="button">{{ the_confirm_text }}</a>
+    {% endif %}
+    {% if the_cancel_text %}
+        <a href="{{ the_cancel_href }}" class="button">{{ the_cancel_text }}</a>
+    {% endif %}
+
+
+{% endblock %}

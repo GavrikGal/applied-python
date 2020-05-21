@@ -9,7 +9,9 @@
 
     {% if session['user_name'] %}
         {% if session['user_name'] == the_blog_author %}
-            <a href="/add_post/{{ the_blog_id }}" class="button">Добавить пост</a>
+            <div class="post">
+                <a href="/add_post/{{ the_blog_id }}" class="button">Добавить пост</a>
+            </div>
         {% endif %}
     {% endif %}
 
