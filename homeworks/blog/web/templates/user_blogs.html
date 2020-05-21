@@ -7,7 +7,7 @@
 <h2>{{ the_title }}</h2>
 
     {% if session['user_name'] %}
-    <form method="post" action="/add_blog">
+    <form method="post" action="/add_blog" class="post">
         <table>
             <p>Хочешь создать новый блог?</p>
             <tr>
@@ -21,6 +21,7 @@
     {% endif %}
 
     {% if the_user_blogs %}
+    <div class="post">
     <h2>Список всех твоих блогов</h2>
 
         <form method="post" action="/delete_blogs">
@@ -41,6 +42,7 @@
         </table>
         <p><input value="Удалить выбранные" type="submit" class="button"></p>
         </form>
+    </div>
     {% endif %}
 
 

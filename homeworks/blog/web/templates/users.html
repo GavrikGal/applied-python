@@ -4,7 +4,7 @@
 
 <h2>{{ the_title }}</h2>
 
-    <form method="post" action="/add_user">
+    <form method="post" action="/add_user" class="post">
         <table>
             <p>Заполните форму для добавления пользователя</p>
             <tr>
@@ -27,6 +27,7 @@
         <p><input value="Добавить" type="submit"></p>
     </form>
 
+    <div class="post">
     <h2>Список всех пользователей</h2>
 
     <table>
@@ -45,7 +46,7 @@
     {% endfor %}
 
     </table>
-
+    </div>
 
 
 

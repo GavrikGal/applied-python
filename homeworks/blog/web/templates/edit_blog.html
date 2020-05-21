@@ -7,7 +7,7 @@
 <h2>{{ the_title }}</h2>
 
     {% if session['user_name'] %}
-    <form method="post" action="/update_blog">
+    <form method="post" action="/update_blog" class="post">
         <table>
             <p>Хочешь изменить свой блог?</p>
             <tr>
@@ -45,9 +45,5 @@
         </div>
     </div>
     {% endfor %}
-
-    Все блоги, возможность их удалить и редактировать
-
-
 
 {% endblock %}

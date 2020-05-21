@@ -3,6 +3,7 @@
 {% block body %}
 
     {% if the_blogs %}
+    <div class="post">
     <h2>{{ the_title }}</h2>
 
         <table>
@@ -19,6 +20,7 @@
         {% endfor %}
 
         </table>
+    </div>
     {% endif %}
 
 {% endblock %}
