@@ -34,6 +34,7 @@ CREATE TABLE blogs_posts (
 CREATE TABLE comments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     text TEXT NOT NULL,
+    datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     user_id INT NOT NULL,
     parent_post_id INT,
     parent_comment_id INT,

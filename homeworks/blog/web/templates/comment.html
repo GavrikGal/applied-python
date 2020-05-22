@@ -1,0 +1,21 @@
+<div class="comment">
+
+        <h4>{{ the_comment.user.first_name }}</h4>
+        <p>{{ the_comment.text }}</p>
+        <form method="post"
+              action="/reply_comment/{{ the_blog_id }}/{{ the_post.id }}/{{ the_comment.id }}">
+            <input name="comment_text"
+                   type="text"
+                   width="150"
+                   placeholder="Введите текст комментария"
+                   autocomplete="off">
+            <input type="submit" value="ответить">
+
+        </form>
+        {% if the_comment.child_comments %}
+            {% for the_comment in the_comment.child_comments %}
+                {% include 'comment.html' %}
+            {% endfor %}
+        {% endif %}
+
+</div>

@@ -1,4 +1,4 @@
-from ..repository import blogrepository
+from ..repository import blogrepository, commentrepository
 
 
 class Post:
@@ -8,9 +8,16 @@ class Post:
         self.content = content
         self.datetime = datetime
         self._blogs = []
+        self._comments = []
 
     @property
     def blogs(self):
         blog_repository = blogrepository.BlogRepository()
         self._blogs = blog_repository.find_by_post_id(self.id)
         return self._blogs
+
+    @property
+    def comments(self):
+        comment_repository = commentrepository.CommentRepository()
+        self._comments = comment_repository.find_by_parent_post(self)
+        return self._comments

@@ -34,7 +34,6 @@ class UsersRepository:
                                   last_name,
                                   login,
                                   password,))
-            # return True
 
     def find_by_login(self, login) -> Union[User, bool]:
         with UseDataBase(self.dbconfig) as cursor:

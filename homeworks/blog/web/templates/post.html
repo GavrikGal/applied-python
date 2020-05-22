@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <div class="post">
+        <h2>{{ the_post.title }}</h2>
+        <p>
+            {{ the_post.content }}
+        </p>
+    </div>
+
+    {% for the_comment in the_comments %}
+        {% include 'comment.html' %}
+    {% endfor %}
+
+    {% if session['user_name'] %}
+        <form method="post" action="/add_comment/{{ the_blog_id }}/{{ the_post.id }}" class="comment">
+            <input name="comment_text"
+                   type="text"
+                   placeholder="Введите текст комментария"
+                   width="150"
+                   autocomplete="off">
+            <input type="submit" value="Комментировать пост" class="button">
+        </form>
+    {% endif %}
+
+{% endblock %}

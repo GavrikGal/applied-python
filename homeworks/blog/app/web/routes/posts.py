@@ -85,3 +85,13 @@ def update_post(blog_id) -> 'html':
 def delete_post(blog_id, post_id):
     post_service.delete_post(post_id)
     return redirect('/edit_blog/{}'.format(blog_id))
+
+
+@bp.route('/post/<blog_id>/<post_id>')
+def post(blog_id, post_id):
+    post = post_service.find_by_id(post_id)
+
+    return render_template('post.html',
+                           the_post=post,
+                           the_comments=post.comments,
+                           the_blog_id=blog_id)

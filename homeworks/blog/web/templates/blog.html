@@ -16,12 +16,14 @@
     {% endif %}
 
     {% for the_post in the_posts %}
-        <div class="post">
-            <h1>{{ the_post.title }}</h1>
-            <div>
-                {{ the_post.content }}
+        <a href="/post/{{the_blog_id}}/{{the_post.id}}">
+            <div class="post">
+                <h1>{{ the_post.title }}</h1>
+                <div>
+                    {{ the_post.content }}
+                </div>
             </div>
-        </div>
+        </a>
     {% endfor %}
 
 
