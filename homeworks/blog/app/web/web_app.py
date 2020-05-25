@@ -1,14 +1,15 @@
 from flask import Flask
 from .routes import base, users, auth, blogs, posts, comments
-from . import config
+from .config import Configuration
 
-
+configuration = Configuration()
 app = Flask(__name__,
-            template_folder=config.template_folder,
-            static_folder=config.static_folder)
+            template_folder=configuration.template_folder,
+            static_folder=configuration.static_folder)
 
-app.secret_key = config.secret_key
-app.config['dbconfig'] = config.dbconfig
+app.config.from_object(configuration)
+app.secret_key = configuration.secret_key
+
 
 app.register_blueprint(base.bp)
 app.register_blueprint(users.bp)
