@@ -15,6 +15,10 @@ CREATE TABLE blogs (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+CREATE INDEX user_id
+    ON blogs (user_id);
+
+
 CREATE TABLE posts (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
@@ -31,6 +35,11 @@ CREATE TABLE blogs_posts (
     FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 
+CREATE INDEX post_id
+    ON blogs_posts (post_id);
+CREATE INDEX blog_id
+    ON blogs_posts (blog_id);
+
 CREATE TABLE comments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     text TEXT NOT NULL,
@@ -42,6 +51,15 @@ CREATE TABLE comments (
     FOREIGN KEY (parent_post_id) REFERENCES posts(id),
     FOREIGN KEY (parent_comment_id) REFERENCES comments(id)
 );
+
+CREATE INDEX parent_comment_id
+    ON comments (parent_comment_id);
+
+CREATE INDEX parent_post_id
+    ON comments (parent_post_id);
+
+CREATE INDEX user_id
+    ON comments (user_id);
 
 
 INSERT INTO users (first_name, last_name, login, password)

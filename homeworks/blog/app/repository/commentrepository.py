@@ -88,11 +88,6 @@ class CommentRepository:
                                         self.user_repository.find_by_id(content[3]),
                                         parent_post,
                                         parent_comment))
-            # comments = [Comment(content[0],
-            #                     content[1],
-            #                     self.user_repository.find_by_id(content[2]),
-            #                     )
-            #             for content in contents]
             return comments
 
     def find_by_id(self, id) -> Comment:
@@ -119,3 +114,29 @@ class CommentRepository:
                 return comment
             else:
                 raise CommentNotFoundError('Комментарий с заданным Id не найден')
+
+    def find_by_user(self, user) -> Comment:
+        with UseDataBase(self.db_config) as cursor:
+            _SQL = """SELECT id, text, datetime, user_id, parent_post_id, parent_comment_id
+                        FROM comments
+                        WHERE user_id=%s
+                        ORDER BY datetime DESC"""
+            _VAL = (user.id, )
+            cursor.execute(_SQL, _VAL)
+            contents = cursor.fetchall()
+            comments = []
+            for content in contents:
+                parent_post = None
+                parent_comment = None
+                if content[4]:
+                    parent_post = self.post_repository.find_by_id(content[4])
+                if content[5]:
+                    parent_comment = self.find_by_id(content[5])
+                comments.append(Comment(content[0],
+                                        content[1],
+                                        content[2],
+                                        user,
+                                        parent_post,
+                                        parent_comment))
+
+            return comments

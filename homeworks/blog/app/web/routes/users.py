@@ -1,5 +1,6 @@
-from flask import render_template, request, redirect, Blueprint
+from flask import render_template, request, redirect, Blueprint, session
 from ...service import usersservice, password_service
+from .common import authenticated
 
 
 bp = Blueprint('users', __name__)
@@ -33,4 +34,16 @@ def add_user() -> 'html':
                                       request.form['password'],)
 
     return redirect('users')
+
+@bp.route('/user_comments')
+@authenticated
+def user_comments() -> 'html':
+    user = users_service.find_by_id(session['user_id'])
+    comments = user.comments
+
+    return render_template('user_comments.html',
+                           the_title='Тут все ваши комментарии',
+                           the_comments=comments,
+                           the_user=user)
+
 

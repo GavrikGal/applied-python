@@ -1,0 +1,17 @@
+<div class="comment">
+        {% if the_comment.parent_post %}
+            <h3>Коммент на -> "{{ the_comment.parent_post.title}}"</h3>
+        {% endif %}
+        {% if the_comment.parent_comment %}
+            <h3>Коммент на -> "{{ the_comment.parent_comment.user.first_name}}: {{ the_comment.parent_comment.text[:20] }}..."</h3>
+        {% endif %}
+        <h4>{{ the_comment.user.first_name }}</h4>
+        <p>{{ the_comment.text }}</p>
+
+        {% if the_comment.child_comments %}
+            {% for the_comment in the_comment.child_comments %}
+                {% include 'user_comment.html' %}
+            {% endfor %}
+        {% endif %}
+
+</div>

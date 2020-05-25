@@ -1,5 +1,5 @@
 # from ..repository.blogrepository import BlogRepository
-from ..repository import blogrepository
+from ..repository import blogrepository, commentrepository
 
 
 class User:
@@ -10,6 +10,7 @@ class User:
         self.login = login
         self.password_hash = password_hash
         self._blogs = []
+        self._comments = []
 
     blogs = property()
 
@@ -18,3 +19,9 @@ class User:
         blog_repository = blogrepository.BlogRepository()
         self._blogs = blog_repository.all_user_blogs(self.id)
         return self._blogs
+
+    @property
+    def comments(self) -> 'Comment':
+        comment_repository = commentrepository.CommentRepository()
+        self._comments = comment_repository.find_by_user(self)
+        return self._comments
