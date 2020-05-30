@@ -1,0 +1,10 @@
+name: C
+port: 8002
+path: 'd:\WorkSpace\Python\applied-python\homeworks\async_file_storage\tmp\c\'
+nodes:
+  - name: A
+    host: 127.0.0.1
+    port: 8000
+  - name: B
+    host: 127.0.0.1
+    port: 8001

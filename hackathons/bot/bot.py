@@ -43,7 +43,7 @@ def parse_direct_mention(message_text):
 
 
 def handle_command(command_pool, command_text):
-    result = command_pool.handle(command_text)
+    result = command_pool.main_handler(command_text)
 
     if result:
         slack_client.api_call(

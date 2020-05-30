@@ -1,0 +1,2 @@
+text content in V.txt
+has 2 string

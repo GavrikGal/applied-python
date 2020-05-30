@@ -14,7 +14,7 @@ class CommandPool:
     def handle(self, command_text):
         for handler in self._command_handlers:
             try:
-                result = handler.handle(command_text)
+                result = handler.main_handler(command_text)
                 if result is not None:
                     return result
             except Exception as e:
