@@ -1,6 +1,8 @@
 name: C
 port: 8002
 path: 'd:\WorkSpace\Python\applied-python\homeworks\async_file_storage\tmp\c\'
+save_file: True
+clear_tmp_file_time: 0
 nodes:
   - name: A
     host: 127.0.0.1

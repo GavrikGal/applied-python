@@ -2,7 +2,7 @@ import filestorage
 import sys
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.ERROR)
 
 if len(sys.argv) < 2:
     logging.error('Требуется запуск с указанием конфиругационного файла')

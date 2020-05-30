@@ -1,6 +1,8 @@
 name: A
 port: 8000
 path: 'd:\WorkSpace\Python\applied-python\homeworks\async_file_storage\tmp\a\'
+save_file: True
+clear_tmp_file_time: 20
 nodes:
   - name: B
     host: 127.0.0.1

@@ -4,9 +4,11 @@ import yaml
 from aiohttp import web
 import logging
 import os
+import threading
+import time
 
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.ERROR)
 
 
 class Node:
@@ -59,6 +61,7 @@ class FileStorage:
             else:
                 data = await self.get_file(file_name)
                 if data is not None and data != self.FILE_NOT_FOUND:
+
                     return await self.prepare_response(request, data, file_name)
                 else:
                     return aiohttp.web.HTTPFound('/')
@@ -73,8 +76,34 @@ class FileStorage:
         await response.write(data)
         return response
 
+    def cash_file(self, file_name, data):
+        self.save_file(file_name, data)
+        if self.config['clear_tmp_file_time']:
+            self.delete_after_timeout(file_name, self.config['clear_tmp_file_time'])
+
+    def delete_after_timeout(self, file_name, timeout):
+        def delete(file_name):
+            time.sleep(timeout)
+            try:
+                os.remove(self.config['path'] + file_name)
+            except Exception as err:
+                print(str(err))
+        thread = threading.Thread(target=delete, args=(file_name,))
+        thread.start()
+
+    def save_file(self, file_name, data):
+        def save(file_name, data):
+            try:
+                with open(self.config['path'] + file_name, 'wb') as file:
+                    file.write(data)
+            except Exception as err:
+                print(str(err))
+        thread = threading.Thread(target=save, args=(file_name, data))
+        thread.start()
+
     async def get_file(self, file_name) -> 'file_data':
         data = await self.find_local(file_name)
+        remote_result = self.FILE_NOT_FOUND
         if data is not None and data != self.FILE_NOT_FOUND:
             return data
         else:
@@ -82,9 +111,13 @@ class FileStorage:
             if results is not None:
                 for result in results:
                     if result is not None and result != self.FILE_NOT_FOUND:
-                        return result
+                        remote_result = result
             else:
                 return self.FILE_NOT_FOUND
+        if remote_result is not None and remote_result != self.FILE_NOT_FOUND:
+            if self.config['save_file']:
+                self.cash_file(file_name, remote_result)
+        return remote_result
 
     async def find_remote(self, file_name):
         tasks = []
